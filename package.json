@@ -1,0 +1,24 @@
+{
+  "name": "twiki-backend-addins",
+  "version": "1.0.0",
+  "description": "Addins for twiki backend",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TuleshDev/twiki-backend-addins.git"
+  },
+  "keywords": [
+    "twiki",
+    "backend",
+    "addins"
+  ],
+  "author": "TuleshDev",
+  "license": "AGPL-3.0",
+  "bugs": {
+    "url": "https://github.com/TuleshDev/twiki-backend-addins/issues"
+  },
+  "homepage": "https://github.com/TuleshDev/twiki-backend-addins#readme"
+}
