@@ -20,5 +20,60 @@
   "bugs": {
     "url": "https://github.com/TuleshDev/twiki-backend-addins/issues"
   },
-  "homepage": "https://github.com/TuleshDev/twiki-backend-addins#readme"
+  "homepage": "https://github.com/TuleshDev/twiki-backend-addins#readme",
+  "engines": {
+    "node": ">=10.12"
+  },
+  "resolutions": {
+    "apollo-server-express/**/graphql-tools": "4.0.8",
+    "graphql": "15.3.0"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 major versions",
+    "Firefox ESR",
+    "not ie > 0",
+    "not ie_mob > 0",
+    "not android > 0",
+    "not dead"
+  ],
+  "postcss": {
+    "plugins": {
+      "autoprefixer": {},
+      "cssnano": {
+        "preset": [
+          "default",
+          {
+            "discardComments": {
+              "removeAll": true
+            }
+          }
+        ]
+      },
+      "postcss-flexbugs-fixes": {},
+      "postcss-flexibility": {}
+    }
+  },
+  "pugLintConfig": {
+    "disallowDuplicateAttributes": true,
+    "disallowIdAttributeWithStaticValue": true,
+    "disallowMultipleLineBreaks": true,
+    "requireClassLiteralsBeforeAttributes": true,
+    "requireIdLiteralsBeforeAttributes": true,
+    "requireLineFeedAtFileEnd": true,
+    "requireLowerCaseAttributes": true,
+    "requireLowerCaseTags": true,
+    "requireSpaceAfterCodeOperator": true,
+    "requireStrictEqualityOperators": true,
+    "validateAttributeQuoteMarks": "'",
+    "validateAttributeSeparator": {
+      "separator": ", ",
+      "multiLineSeparator": "\n  "
+    },
+    "validateDivTags": true,
+    "validateIndentation": 2,
+    "excludeFiles": [
+      "node_modules/**"
+    ]
+  }
 }
