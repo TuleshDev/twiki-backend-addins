@@ -3,9 +3,6 @@ logs
 *.log
 /logs
 
-# Deployment builds
-dist
-
 # Dependency directories
 node_modules
 npm/node_modules
@@ -15,16 +12,6 @@ npm/node_modules
 .node_repl_history
 npm-debug.log*
 .yarn
-
-# Generated assets
-/assets
-server/views/master.pug
-server/views/legacy/master.pug
-server/views/setup.pug
-
-# Webpack
-.webpack-cache
-.fusebox
 
 # Config Files
 /config.yml
@@ -47,3 +34,6 @@ test-results/
 
 # Localization Resources
 /server/locales/**/*.yml
+
+# package-lock.json file
+package-lock.json
