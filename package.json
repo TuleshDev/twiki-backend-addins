@@ -1,6 +1,6 @@
 {
   "name": "twiki-backend-addins",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Addins for twiki backend",
   "main": "index.js",
   "scripts": {
@@ -23,6 +23,24 @@
   "homepage": "https://github.com/TuleshDev/twiki-backend-addins#readme",
   "engines": {
     "node": ">=10.12"
+  },
+  "files": [
+    "server/**/",
+    "index.js"
+  ],
+  "dependencies": {
+    "@joplin/turndown-plugin-gfm": "1.0.45",
+    "cheerio": "1.0.0-rc.5",
+    "clean-css": "5.3.2",
+    "emoji-regex": "10.2.1",
+    "fs-extra": "9.0.1",
+    "he": "1.2.0",
+    "js-binary": "1.2.0",
+    "js-yaml": "3.14.0",
+    "lodash": "4.17.21",
+    "objection": "2.2.18",
+    "striptags": "3.2.0",
+    "turndown": "7.1.1"
   },
   "resolutions": {
     "apollo-server-express/**/graphql-tools": "4.0.8",
