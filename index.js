@@ -1,16 +1,19 @@
 const getPage = require('./server/models/pages')
 
-const updateModels = (models, pagesBase, pageHelper) => {
-  let additionalModels = {
-    pages: getPage(pagesBase, pageHelper)
-  }
+module.exports = {
+  updateModels (models, pagesBase, pageHelper) {
+    let additionalModels = {
+      pages: getPage(pagesBase, pageHelper)
+    }
 
-  models = {
-    ...models,
-    ...additionalModels
-  }
+    models = {
+      ...models,
+      ...additionalModels
+    }
 
-  return models
+    return models
+  },
+  getPageViewPath () {
+    return `${__dirname}/server/views/page`
+  }
 }
-
-module.exports = updateModels
