@@ -27,7 +27,7 @@ const cheerio = require('cheerio')
 /**
  * Pages model
  */
-const getPage = (pagesBase, pageHelper) => {
+const getPageModel = (pagesBase, pageHelper) => {
   return class Page extends pagesBase {
     /*
     static get tableName() { return 'pages' }
@@ -1232,4 +1232,4 @@ const getPage = (pagesBase, pageHelper) => {
   }
 }
 
-module.exports = getPage
+module.exports = getPageModel

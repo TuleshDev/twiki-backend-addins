@@ -1,5 +1,7 @@
+const _ = require('lodash')
 const fs = require('fs')
-const getPage = require('./server/models/pages')
+const getSiteGraphResolver = require('./server/graph/resolvers/site')
+const getPageModel = require('./server/models/pages')
 
 module.exports = {
   getUpdatableGraphSchemas () {
@@ -14,9 +16,26 @@ module.exports = {
 
     return typeDefs
   },
+  updateGraphResolvers (resolversDict, graphHelper) {
+    const additionalResolversDict = {
+      site: getSiteGraphResolver(graphHelper)
+    }
+
+    const additionalKeys = _.keys(additionalResolversDict)
+    additionalKeys.forEach(key => {
+      delete resolversDict[key]
+    })
+
+    resolversDict = {
+      ...resolversDict,
+      ...additionalResolversDict
+    }
+
+    return resolversDict
+  },
   updateModels (models, pagesBase, pageHelper) {
-    let additionalModels = {
-      pages: getPage(pagesBase, pageHelper)
+    const additionalModels = {
+      pages: getPageModel(pagesBase, pageHelper)
     }
 
     models = {
