@@ -1,9 +1,17 @@
 const _ = require('lodash')
 const fs = require('fs')
+const getSetupHelper = require('./server/setup')
+const getMasterHelper = require('./server/master')
 const getSiteGraphResolver = require('./server/graph/resolvers/site')
 const getPageModel = require('./server/models/pages')
 
 module.exports = {
+  getSetup (system) {
+    return getSetupHelper(system)
+  },
+  getMaster (auth, localization, mail, system) {
+    return getMasterHelper(auth, localization, mail, system)
+  },
   getUpdatableGraphSchemas () {
     let additionalSchemas = fs.readdirSync(`${__dirname}/server/graph/schemas`)
     return additionalSchemas
