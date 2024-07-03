@@ -12,6 +12,9 @@ module.exports = {
   getMaster (auth, localization, mail, system) {
     return getMasterHelper(auth, localization, mail, system)
   },
+  getAppDataPath () {
+    return `${__dirname}/server/app/data.yml`
+  },
   getUpdatableGraphSchemas () {
     let additionalSchemas = fs.readdirSync(`${__dirname}/server/graph/schemas`)
     return additionalSchemas
