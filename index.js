@@ -4,6 +4,7 @@ const getSetupHelper = require('./server/setup')
 const getMasterHelper = require('./server/master')
 const getSiteGraphResolver = require('./server/graph/resolvers/site')
 const getPageModel = require('./server/models/pages')
+const updateCommonDiskHelper = require('./server/modules/storage/disk/common')
 
 module.exports = {
   getSetup (system) {
@@ -55,6 +56,9 @@ module.exports = {
     }
 
     return models
+  },
+  updateCommonDisk (commonDisk, pageHelper) {
+    return updateCommonDiskHelper(commonDisk, pageHelper)
   },
   getPageViewPath () {
     return `${__dirname}/server/views/page`
