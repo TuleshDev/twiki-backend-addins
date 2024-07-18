@@ -1,3 +1,4 @@
+const path = require('path')
 const _ = require('lodash')
 const fs = require('fs')
 const getSetupHelper = require('./server/setup')
@@ -15,6 +16,12 @@ module.exports = {
   },
   getAppDataPath () {
     return `${__dirname}/server/app/data.yml`
+  },
+  getBaseMigrationPath (configDbType) {
+    return path.join(`${__dirname}/server`, (configDbType !== 'sqlite') ? 'db/migrations' : 'db/migrations-sqlite')
+  },
+  getBaseMigrationPathBeta (configDbType) {
+    return path.join(`${__dirname}/server`, (configDbType !== 'sqlite') ? 'db/beta/migrations' : 'db/beta/migrations-sqlite')
   },
   getUpdatableGraphSchemas () {
     let additionalSchemas = fs.readdirSync(`${__dirname}/server/graph/schemas`)
