@@ -4,6 +4,7 @@ const fs = require('fs')
 const getSetupHelper = require('./server/setup')
 const getMasterHelper = require('./server/master')
 const getSiteGraphResolver = require('./server/graph/resolvers/site')
+const rebuildSubtreeHelper = require('./server/jobs/rebuild-subtree')
 const getPageModel = require('./server/models/pages')
 const updateCommonDiskHelper = require('./server/modules/storage/disk/common')
 
@@ -51,6 +52,9 @@ module.exports = {
     }
 
     return resolversDict
+  },
+  async rebuildSubtree () {
+    await rebuildSubtreeHelper()
   },
   updateModels (models, pagesBase, pageHelper) {
     const additionalModels = {
