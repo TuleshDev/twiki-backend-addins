@@ -65,6 +65,13 @@ type PageQuery {
     includeAncestors: Boolean
   ): [PageTreeItem] @auth(requires: ["manage:system", "read:pages"])
 
+  subtree(
+    path: String
+    parent: Int
+    locale: String!
+    includeAncestors: Boolean
+  ): [PageSubtreeItem] @auth(requires: ["manage:system", "read:pages"])
+
   links(
     locale: String!
   ): [PageLinkItem] @auth(requires: ["manage:system", "read:pages"])
@@ -293,6 +300,19 @@ type PageTreeItem {
   isPrivate: Boolean!
   isFolder: Boolean!
   privateNS: String
+  parent: Int
+  pageId: Int
+  locale: String!
+}
+
+type PageSubtreeItem {
+  id: Int!
+  path: String!
+  title: String!
+  isPrivate: Boolean!
+  privateNS: String
+  level: Int!
+  parentSectionId: Int!
   parent: Int
   pageId: Int
   locale: String!

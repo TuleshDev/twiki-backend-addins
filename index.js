@@ -3,6 +3,7 @@ const _ = require('lodash')
 const fs = require('fs')
 const getSetupHelper = require('./server/setup')
 const getMasterHelper = require('./server/master')
+const getPageGraphResolver = require('./server/graph/resolvers/page')
 const getSiteGraphResolver = require('./server/graph/resolvers/site')
 const rebuildSubtreeHelper = require('./server/jobs/rebuild-subtree')
 const getPageModel = require('./server/models/pages')
@@ -38,6 +39,7 @@ module.exports = {
   },
   updateGraphResolvers (resolversDict, graphHelper) {
     const additionalResolversDict = {
+      page: getPageGraphResolver(graphHelper),
       site: getSiteGraphResolver(graphHelper)
     }
 
