@@ -275,10 +275,25 @@ const getPageGraphResolver = (graphHelper) => {
           }
           if (!args.parent || args.parent < 1) {
             builder.whereNull('parent')
+            if (args.level0) {
+              builder.andWhere(whereBuilder => {
+                whereBuilder.whereNull('level').orWhere('level', '0')
+              })
+            }
           } else {
             builder.where('parent', args.parent)
+            if (args.level0) {
+              builder.andWhere(whereBuilder => {
+                whereBuilder.whereNull('level').orWhere('level', '0')
+              })
+            }
             if (args.includeAncestors && curPage && curPage.ancestors.length > 0) {
               builder.orWhereIn('id', _.isString(curPage.ancestors) ? JSON.parse(curPage.ancestors) : curPage.ancestors)
+              if (args.level0) {
+                builder.andWhere(whereBuilder => {
+                  whereBuilder.whereNull('level').orWhere('level', '0')
+                })
+              }
             }
           }
         }).orderBy([{ column: 'isFolder', order: 'desc' }, 'title'])
@@ -294,44 +309,76 @@ const getPageGraphResolver = (graphHelper) => {
         }))
       },
       /**
+       * FETCH PARENT ITEM WITH LEVEL 0 IN SUBTREE
+       */
+      async parentItemWithLevel0InSubtree (obj, args, context, info) {
+        if (!args.locale) { args.locale = WIKI.config.lang.code }
+        if (!args.path) { args.path = '' }
+
+        let curPage = await WIKI.models.knex('pageSubtree').first('ancestors').where({
+          path: args.path,
+          localeCode: args.locale
+        })
+        if (curPage && curPage.ancestors.length > 0) {
+          const results = await WIKI.models.knex('pageSubtree').where(builder => {
+            builder.where('id', _.isString(curPage.ancestors) ? JSON.parse(curPage.ancestors)[0] : curPage.ancestors[0])
+          })
+          return results.filter(r => {
+            return WIKI.auth.checkAccess(context.req.user, ['read:pages'], {
+              path: r.path,
+              locale: r.localeCode
+            })
+          }).map(r => ({
+            ...r,
+            parent: r.parent || 0,
+            locale: r.localeCode
+          }))[0]
+        } else {
+          return null
+        }
+      },
+      /**
        * FETCH PAGE SUBTREE
        */
       async subtree (obj, args, context, info) {
         let curPage = null
+        let id = null
 
         if (!args.locale) { args.locale = WIKI.config.lang.code }
 
         if (args.path && !args.parent) {
-          curPage = await WIKI.models.knex('pageSubtree').first('parent', 'ancestors').where({
+          curPage = await WIKI.models.knex('pageSubtree').first('id', 'parent', 'ancestors').where({
             path: args.path,
             localeCode: args.locale
           })
           if (curPage) {
-            args.parent = curPage.parent || 0
+            if (!curPage.parent) {
+              args.parent = curPage.id
+            } else {
+              args.parent = curPage.parent
+              id = curPage.id
+            }
           } else {
             return []
           }
         }
 
         const results = await WIKI.models.knex('pageSubtree').where(builder => {
-          builder.where('localeCode', args.locale)
-          //switch (args.mode) {
-          //  case 'FOLDERS':
-          //    builder.andWhere('isFolder', true)
-          //    break
-          //  case 'PAGES':
-          //    builder.andWhereNotNull('pageId')
-          //    break
-          //}
-          if (!args.parent || args.parent < 1) {
-            builder.whereNull('parent')
-          } else {
-            builder.where('parent', args.parent)
+          if (id) {
+            builder.where('id', id)
+          }
+          if (args.parent) {
+            if (curPage) {
+              builder.orWhere('id', args.parent)
+            } else {
+              builder.where('id', args.parent)
+            }
+            builder.orWhere('parent', args.parent)
             if (args.includeAncestors && curPage && curPage.ancestors.length > 0) {
-              builder.orWhereIn('id', _.isString(curPage.ancestors) ? JSON.parse(curPage.ancestors) : curPage.ancestors)
+              builder.orWhereIn('parent', _.isString(curPage.ancestors) ? JSON.parse(curPage.ancestors) : curPage.ancestors)
+              builder.orWhere('id', _.isString(curPage.ancestors) ? JSON.parse(curPage.ancestors)[0] : curPage.ancestors[0])
             }
           }
-        //}).orderBy([{ column: 'isFolder', order: 'desc' }, 'title'])
         }).orderBy(['title'])
         return results.filter(r => {
           return WIKI.auth.checkAccess(context.req.user, ['read:pages'], {

@@ -63,7 +63,13 @@ type PageQuery {
     mode: PageTreeMode!
     locale: String!
     includeAncestors: Boolean
+    level0: Boolean
   ): [PageTreeItem] @auth(requires: ["manage:system", "read:pages"])
+
+  parentItemWithLevel0InSubtree(
+    path: String
+    locale: String!
+  ): PageSubtreeItem @auth(requires: ["manage:system", "read:pages"])
 
   subtree(
     path: String

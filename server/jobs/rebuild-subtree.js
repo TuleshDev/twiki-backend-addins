@@ -17,19 +17,18 @@ const rebuildSubtreeHelper = async () => {
 
     while (pagesClone.length > 0) {
       let page = pagesClone.pop()
-      let previousPage = null
       let level = page.level
       let parentId = null
       let currentTree = []
-      let currentTreeAncestors = []
       for (let i = 0; i < level + 1; i++) {
         const parentSectionId = page.parentSectionId
         const found = _.find(tree, {
           pageId: page.id
         })
+        let item = null
         if (!found) {
           pik++
-          let item = {
+          item = {
             id: pik,
             localeCode: page.localeCode,
             path: page.path,
@@ -41,26 +40,24 @@ const rebuildSubtreeHelper = async () => {
             parentSectionId: parentSectionId
           }
           tree.push(item)
-          currentTree.push(item)
-          parentId = pik
-          currentTreeAncestors.push({
+          currentTree.push({
             found: false,
-            array: []
+            item: item,
+            ancestors: []
           })
+          parentId = pik
         } else {
-          parentId = found.id
-          currentTreeAncestors.push({
+          item = found
+          currentTree.push({
             found: true,
-            array: []
+            item: item,
+            ancestors: []
           })
-        }
-        if (previousPage) {
-          previousPage.parent = parentId
+          parentId = item.id
         }
         for (let j = 0; j < i; j++) {
-          currentTreeAncestors[j].array.push(parentId)
+          currentTree[j].ancestors.push(parentId)
         }
-        previousPage = page
         page = _.find(pages, {
           id: parentSectionId
         })
@@ -68,11 +65,15 @@ const rebuildSubtreeHelper = async () => {
           id: parentSectionId
         })
       }
+      let nextObject = null
       for (let i = 0; i < level + 1; i++) {
-        let item = currentTree[i]
-        let ancestors = currentTreeAncestors[i]
-        if (!ancestors.found) {
-          item.ancestors = JSON.stringify(ancestors.array.reverse())
+        let object = currentTree[i]
+        if (!object.found) {
+          object.item.ancestors = JSON.stringify(object.ancestors.reverse())
+          if (i < level) {
+            let nextObject = currentTree[i + 1]
+            object.item.parent = nextObject.item.id
+          }
         }
       }
     }
