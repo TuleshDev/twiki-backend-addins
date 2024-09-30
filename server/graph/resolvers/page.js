@@ -352,11 +352,12 @@ const getPageGraphResolver = (graphHelper) => {
             localeCode: args.locale
           })
           if (curPage) {
-            if (!curPage.parent) {
+            if (args.pageWithPathAsParent) {
               args.parent = curPage.id
+            } else if (!curPage.parent) {
+              id = curPage.id
             } else {
               args.parent = curPage.parent
-              id = curPage.id
             }
           } else {
             return []
@@ -368,11 +369,7 @@ const getPageGraphResolver = (graphHelper) => {
             builder.where('id', id)
           }
           if (args.parent) {
-            if (curPage) {
-              builder.orWhere('id', args.parent)
-            } else {
-              builder.where('id', args.parent)
-            }
+            builder.where('id', args.parent)
             builder.orWhere('parent', args.parent)
             if (args.includeAncestors && curPage && curPage.ancestors.length > 0) {
               builder.orWhereIn('parent', _.isString(curPage.ancestors) ? JSON.parse(curPage.ancestors) : curPage.ancestors)
@@ -387,7 +384,7 @@ const getPageGraphResolver = (graphHelper) => {
           })
         }).map(r => ({
           ...r,
-          parent: r.parent || 0,
+          parent: r.parent,
           locale: r.localeCode
         }))
       },

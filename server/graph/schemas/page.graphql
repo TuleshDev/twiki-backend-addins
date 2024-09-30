@@ -73,6 +73,7 @@ type PageQuery {
 
   subtree(
     path: String
+    pageWithPathAsParent: Boolean
     parent: Int
     locale: String!
     includeAncestors: Boolean
