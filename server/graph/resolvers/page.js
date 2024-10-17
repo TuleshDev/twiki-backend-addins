@@ -309,19 +309,21 @@ const getPageGraphResolver = (graphHelper) => {
         }))
       },
       /**
-       * FETCH PARENT ITEM WITH LEVEL 0 IN SUBTREE
+       * FETCH TRACK IN PAGE SUBTREE
        */
-      async parentItemWithLevel0InSubtree (obj, args, context, info) {
+      async trackInSubtree (obj, args, context, info) {
         if (!args.locale) { args.locale = WIKI.config.lang.code }
         if (!args.path) { args.path = '' }
 
-        let curPage = await WIKI.models.knex('pageSubtree').first('ancestors').where({
+        let curPage = await WIKI.models.knex('pageSubtree').first('id', 'ancestors').where({
           path: args.path,
           localeCode: args.locale
         })
-        if (curPage && curPage.ancestors.length > 0) {
+        if (curPage) {
           const results = await WIKI.models.knex('pageSubtree').where(builder => {
-            builder.where('id', _.isString(curPage.ancestors) ? JSON.parse(curPage.ancestors)[0] : curPage.ancestors[0])
+            const ancestors = _.isString(curPage.ancestors) ? JSON.parse(curPage.ancestors) : curPage.ancestors
+            const trackIds = [...ancestors, curPage.id]
+            builder.whereIn('id', trackIds)
           })
           return results.filter(r => {
             return WIKI.auth.checkAccess(context.req.user, ['read:pages'], {
@@ -332,9 +334,9 @@ const getPageGraphResolver = (graphHelper) => {
             ...r,
             parent: r.parent || 0,
             locale: r.localeCode
-          }))[0]
+          }))
         } else {
-          return null
+          return []
         }
       },
       /**

@@ -66,10 +66,10 @@ type PageQuery {
     level0: Boolean
   ): [PageTreeItem] @auth(requires: ["manage:system", "read:pages"])
 
-  parentItemWithLevel0InSubtree(
+  trackInSubtree(
     path: String
     locale: String!
-  ): PageSubtreeItem @auth(requires: ["manage:system", "read:pages"])
+  ): [PageSubtreeItem] @auth(requires: ["manage:system", "read:pages"])
 
   subtree(
     path: String
