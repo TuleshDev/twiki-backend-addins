@@ -343,6 +343,8 @@ const getPageGraphResolver = (graphHelper) => {
        * FETCH PAGE SUBTREE
        */
       async subtree (obj, args, context, info) {
+        const condition = true
+
         let curPage = null
         let id = null
 
@@ -366,7 +368,7 @@ const getPageGraphResolver = (graphHelper) => {
           }
         }
 
-        const results = await WIKI.models.knex('pageSubtree').where(builder => {
+        let firstQuery = WIKI.models.knex('pageSubtree').where(builder => {
           if (id) {
             builder.where('id', id)
           }
@@ -378,7 +380,22 @@ const getPageGraphResolver = (graphHelper) => {
               builder.orWhere('id', _.isString(curPage.ancestors) ? JSON.parse(curPage.ancestors)[0] : curPage.ancestors[0])
             }
           }
-        }).orderBy(['title'])
+        })
+
+        let finalQuery = null
+        if (condition) {
+          firstQuery = await firstQuery.select('id').pluck('id')
+
+          const secondQuery = WIKI.models.knex('pageSubtree')
+            .whereIn('id', firstQuery)
+            .orWhereIn('parent', firstQuery)
+
+          finalQuery = secondQuery
+        } else {
+          finalQuery = firstQuery
+        }
+
+        const results = await finalQuery.orderBy(['title'])
         return results.filter(r => {
           return WIKI.auth.checkAccess(context.req.user, ['read:pages'], {
             path: r.path,
