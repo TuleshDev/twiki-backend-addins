@@ -157,7 +157,8 @@ const getMasterHelper = (auth, localization, mail, system) => {
         contentLicense: WIKI.config.contentLicense,
         footerOverride: WIKI.config.footerOverride,
         logoUrl: WIKI.config.logoUrl,
-        featurePageTreeNavigation: WIKI.config.features.featurePageTreeNavigation
+        featurePageTreeNavigation: WIKI.config.features.featurePageTreeNavigation,
+        featureCalculateStateOfLastNodes: WIKI.config.features.featureCalculateStateOfLastNodes
       }
       res.locals.langs = await WIKI.models.locales.getNavLocales({ cache: true })
       res.locals.analyticsCode = await WIKI.models.analytics.getCode({ cache: true })

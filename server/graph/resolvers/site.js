@@ -104,6 +104,7 @@ const getSiteGraphResolver = (graphHelper) => {
             featurePageRatings: _.get(args, 'featurePageRatings', WIKI.config.features.featurePageRatings),
             featurePageComments: _.get(args, 'featurePageComments', WIKI.config.features.featurePageComments),
             featurePageTreeNavigation: _.get(args, 'featurePageTreeNavigation', WIKI.config.features.featurePageTreeNavigation),
+            featureCalculateStateOfLastNodes: _.get(args, 'featureCalculateStateOfLastNodes', WIKI.config.features.featureCalculateStateOfLastNodes),
             featurePersonalWikis: _.get(args, 'featurePersonalWikis', WIKI.config.features.featurePersonalWikis)
           }
 

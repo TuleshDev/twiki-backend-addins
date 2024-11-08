@@ -86,6 +86,7 @@ const getSetupHelper = (system) => {
           featurePageRatings: true,
           featurePageComments: true,
           featurePageTreeNavigation: true,
+          featureCalculateStateOfLastNodes: false,
           featurePersonalWikis: true
         })
         _.set(WIKI.config, 'graphEndpoint', 'https://graph.requarks.io')

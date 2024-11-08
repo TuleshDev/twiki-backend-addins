@@ -81,6 +81,7 @@ defaults:
       featurePageRatings: true
       featurePageComments: true
       featurePageTreeNavigation: true
+      featureCalculateStateOfLastNodes: false
       featurePersonalWikis: true
     security:
       securityOpenRedirect: true
