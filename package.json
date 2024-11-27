@@ -1,6 +1,6 @@
 {
   "name": "twiki-backend-addins",
-  "version": "1.0.16",
+  "version": "1.0.17",
   "description": "Addins for twiki backend",
   "main": "index.js",
   "scripts": {
