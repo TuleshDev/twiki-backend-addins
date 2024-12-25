@@ -53,6 +53,7 @@ const getPageModel = (pagesBase, pageHelper) => {
 
           level: {type: 'integer'},
           parentSectionId: {type: 'integer'},
+          order: {type: 'integer'},
 
           createdAt: {type: 'string'},
           updatedAt: {type: 'string'}
@@ -180,6 +181,7 @@ const getPageModel = (pagesBase, pageHelper) => {
         toc: 'string',
         level: 'uint',
         parentSectionId: 'uint',
+        order: 'uint',
         updatedAt: 'string'
       })
     }
@@ -338,6 +340,7 @@ const getPageModel = (pagesBase, pageHelper) => {
         toc: '[]',
         level: opts.level || 0,
         parentSectionId: opts.parentSectionId || 0,
+        order: opts.order,
         extra: JSON.stringify({
           js: scriptJs,
           css: scriptCss
@@ -393,7 +396,6 @@ const getPageModel = (pagesBase, pageHelper) => {
      * @param {Object} opts Page Properties
      * @returns {Promise} Promise of the Page Model Instance
      */
-    /*
     static async updatePage(opts) {
       // -> Fetch original page
       const ogPage = await WIKI.models.pages.query().findById(opts.id)
@@ -458,6 +460,7 @@ const getPageModel = (pagesBase, pageHelper) => {
         publishEndDate: opts.publishEndDate || '',
         publishStartDate: opts.publishStartDate || '',
         title: opts.title,
+        order: opts.order,
         extra: JSON.stringify({
           ...ogPage.extra,
           js: scriptJs,
@@ -472,6 +475,9 @@ const getPageModel = (pagesBase, pageHelper) => {
       // -> Render page to HTML
       await WIKI.models.pages.renderPage(page)
       WIKI.events.outbound.emit('deletePageFromCache', page.hash)
+
+      // -> Rebuild page tree
+      await WIKI.models.pages.rebuildTree()
 
       // -> Update Search Index
       const pageContents = await WIKI.models.pages.query().findById(page.id).select('render')
@@ -514,7 +520,6 @@ const getPageModel = (pagesBase, pageHelper) => {
 
       return page
     }
-    */
 
     /**
      * Convert an Existing Page
@@ -1043,6 +1048,7 @@ const getPageModel = (pagesBase, pageHelper) => {
             'pages.creatorId',
             'pages.level',
             'pages.parentSectionId',
+            'pages.order',
             'pages.extra',
             {
               authorName: 'author.name',
@@ -1119,6 +1125,7 @@ const getPageModel = (pagesBase, pageHelper) => {
         toc: _.isString(page.toc) ? page.toc : JSON.stringify(page.toc),
         level: page.level,
         parentSectionId: page.parentSectionId,
+        order: page.order,
         updatedAt: page.updatedAt
       }))
     }

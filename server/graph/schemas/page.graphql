@@ -114,6 +114,7 @@ type PageMutation {
     title: String!
     level: Int
     parentSectionId: Int
+    order: Int!
   ): PageResponse @auth(requires: ["write:pages", "manage:pages", "manage:system"])
 
   update(
@@ -131,6 +132,7 @@ type PageMutation {
     scriptJs: String
     tags: [String]
     title: String
+    order: Int!
   ): PageResponse @auth(requires: ["write:pages", "manage:pages", "manage:system"])
 
   convert(
@@ -307,6 +309,7 @@ type PageTreeItem {
   isPrivate: Boolean!
   isFolder: Boolean!
   privateNS: String
+  order: Int
   parent: Int
   pageId: Int
   locale: String!
@@ -321,6 +324,7 @@ type PageSubtreeItem {
   privateNS: String
   level: Int!
   parentSectionId: Int!
+  order: Int!
   parent: Int
   pageId: Int
   locale: String!

@@ -296,7 +296,7 @@ const getPageGraphResolver = (graphHelper) => {
               }
             }
           }
-        }).orderBy([{ column: 'isFolder', order: 'desc' }, 'title'])
+        }).orderBy([{ column: 'isFolder', order: 'desc' }, 'order', 'title'])
         return results.filter(r => {
           return WIKI.auth.checkAccess(context.req.user, ['read:pages'], {
             path: r.path,
@@ -395,7 +395,7 @@ const getPageGraphResolver = (graphHelper) => {
           finalQuery = firstQuery
         }
 
-        const results = await finalQuery.orderBy(['title'])
+        const results = await finalQuery.orderBy(['order', 'title'])
         return results.filter(r => {
           return WIKI.auth.checkAccess(context.req.user, ['read:pages'], {
             path: r.path,

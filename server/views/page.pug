@@ -33,7 +33,8 @@ block body
       filename=pageFilename
       :additional-params={
         level: page.level,
-        parentSectionId: page.parentSectionId
+        parentSectionId: page.parentSectionId,
+        order: page.order
       }
       )
       template(slot='contents')

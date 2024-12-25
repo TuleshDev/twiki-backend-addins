@@ -73,6 +73,9 @@ module.exports = {
   updateCommonDisk (commonDisk, pageHelper) {
     return updateCommonDiskHelper(commonDisk, pageHelper)
   },
+  getEditorViewPath () {
+    return `${__dirname}/server/views/editor`
+  },
   getPageViewPath () {
     return `${__dirname}/server/views/page`
   }

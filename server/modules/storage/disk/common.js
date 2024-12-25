@@ -95,6 +95,7 @@ const updateCommonDiskHelper = (commonDisk, pageHelper) => {
         isPrivate: false,
         content: pageData.content,
         user: user,
+        order: _.get(pageData, 'order', currentPage.order),
         skipStorage: true
       })
     } else {
@@ -114,6 +115,7 @@ const updateCommonDiskHelper = (commonDisk, pageHelper) => {
         editor: pageEditor,
         level: _.get(pageData, 'level', 0) || 0,
         parentSectionId: _.get(pageData, 'parentSectionId', 0) || 0,
+        order: _.get(pageData, 'order', 0),
         skipStorage: true
       })
     }

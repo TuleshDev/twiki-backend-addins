@@ -10,7 +10,7 @@ const rebuildSubtreeHelper = async () => {
     //await WIKI.configSvc.loadFromDb()
     //await WIKI.configSvc.applyFlags()
 
-    const pages = await WIKI.models.pages.query().select('id', 'path', 'localeCode', 'title', 'isPrivate', 'privateNS', 'level', 'parentSectionId').orderBy(['id'])
+    const pages = await WIKI.models.pages.query().select('id', 'path', 'localeCode', 'title', 'isPrivate', 'privateNS', 'level', 'parentSectionId', 'order').orderBy(['id'])
     let pagesClone = [...pages]
     let tree = []
     let pik = 0
@@ -37,7 +37,8 @@ const rebuildSubtreeHelper = async () => {
             privateNS: page.privateNS,
             level: page.level,
             pageId: page.id,
-            parentSectionId: parentSectionId
+            parentSectionId: parentSectionId,
+            order: page.order
           }
           tree.push(item)
           currentTree.push({
